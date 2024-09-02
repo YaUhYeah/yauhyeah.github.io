@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher or Lower - Soccer Edition</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Higher or Lower - Soccer Edition</h1>
+        <div class="player-container">
+            <div class="player" id="player1">
+                <img src="images/player1.png" alt="Player 1" id="player1-img">
+                <h2 id="player1-name">Player 1</h2>
+                <p id="player1-goals">Goals: ???</p>
+            </div>
+            <div class="vs">
+                <h2>VS</h2>
+            </div>
+            <div class="player" id="player2">
+                <img src="images/player2.png" alt="Player 2" id="player2-img">
+                <h2 id="player2-name">Player 2</h2>
+                <p id="player2-goals">Goals: ???</p>
+            </div>
+        </div>
+        <div id="current-score">Score: 0</div>
+        <div id="high-score">High Score: 0</div>
+        <button id="higher">Higher</button>
+        <button id="lower">Lower</button>
+        <div id="result"></div>
+        <button id="play-again" style="display: none;">Play Again</button>
+    </div>
+    <script src="javascript/script.js"></script>
+</body>
+
+</html>
