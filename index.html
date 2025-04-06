@@ -1,39 +1,917 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Higher or Lower - Soccer Edition</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Happy 24th Birthday Rachelle! 🎉</title>
+    <style>
+        /* --- Base Styles --- */
+        :root {
+            --primary-color: #ff69b4; /* Hot Pink */
+            --secondary-color: #9370db; /* Medium Purple */
+            --accent-color: #ffdf00; /* Gold */
+            --success-color: #32cd32; /* Lime Green */
+            --bg-color: #fff0f5; /* Lavender Blush - Lighter Pink */
+            --text-color: #333;
+            --card-bg: var(--secondary-color);
+            --card-hover-bg: #a380e3;
+            --card-matched-bg: #90ee90; /* Light Green for matched */
+            --card-matched-glow: rgba(144, 238, 144, 0.7); /* Glow for matched */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Slightly more modern font */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for anchors/buttons */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            /* Subtle dot pattern */
+            background-image:
+                radial-gradient(circle, rgba(255, 105, 180, 0.15) 1px, transparent 1px),
+                radial-gradient(circle, rgba(147, 112, 219, 0.15) 1px, transparent 1px);
+            background-size: 35px 35px;
+            background-position: 0 0, 17.5px 17.5px;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            line-height: 1.6; /* Improved readability */
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: clamp(1.5rem, 5vw, 2.5rem) 1rem; /* Responsive padding */
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 40px; /* Softer curve */
+            border-bottom-right-radius: 40px;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 6vw, 3.2rem); /* Fluid font size */
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            font-weight: 700; /* Bolder heading */
+        }
+
+        header p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            position: relative;
+            z-index: 2;
+            max-width: 750px; /* Slightly narrower */
+            margin: 0 auto;
+            opacity: 0.9; /* Slightly softer text */
+        }
+
+        /* --- Confetti --- */
+        .confetti {
+            position: absolute;
+            width: 8px;  /* Smaller confetti */
+            height: 12px;
+            background-color: var(--accent-color);
+            opacity: 0.9;
+            animation: fall 5s linear infinite;
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        @keyframes fall {
+            0% { transform: translate(0, -20px) rotate(0deg); opacity: 1; }
+            100% { transform: translate(calc(var(--tx, 0px)), 110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- Container & Sections --- */
+        .container {
+            max-width: 1100px; /* Adjusted max-width */
+            margin: clamp(1.5rem, 4vw, 2.5rem) auto; /* Responsive margin */
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .game-section {
+            background-color: white;
+            border-radius: 20px; /* More rounded corners */
+            padding: clamp(1.5rem, 4vw, 2.5rem); /* Responsive padding */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08); /* Softer shadow */
+            margin-bottom: 2rem;
+            border: 4px solid transparent;
+            transition: border-color 0.5s ease, transform 0.3s ease;
+        }
+        .game-section.completed {
+            border-color: var(--success-color);
+            transform: scale(1.01); /* Subtle scale on complete */
+        }
+
+        .game-section h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 600;
+        }
+
+        .game-section p {
+            margin-bottom: 1.5rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            color: #555; /* Slightly lighter paragraph text */
+        }
+
+        /* --- Game Common Styles --- */
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: clamp(0.7rem, 2.5vw, 0.9rem) clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: bold;
+            cursor: pointer;
+            margin: 1rem 0.5rem 0 0.5rem; /* Adjusted margin */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        button:hover:not(:disabled) { /* Add :not(:disabled) */
+            background-color: var(--secondary-color);
+            transform: translateY(-3px); /* Slightly more lift */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .game-status {
+            font-weight: 600; /* Bolder status */
+            margin-top: 1.2rem;
+            min-height: 1.5em;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            transition: color 0.3s ease;
+        }
+        .status-success { color: var(--success-color); }
+        .status-error { color: #e74c3c; }
+        .status-hint { color: var(--secondary-color); }
+
+        /* --- Memory Game Specific Styles --- */
+        #memoryGameSection .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem clamp(1.5rem, 4vw, 2.5rem); /* Responsive gap */
+            margin: 1rem 0 1.8rem 0; /* Adjusted margin */
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: var(--secondary-color);
+        }
+
+        .game-board {
+            display: grid;
+            /* Responsive grid: Adjust minmax values */
+            grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+            gap: clamp(0.7rem, 2vw, 1rem); /* Responsive gap */
+            max-width: 550px; /* Slightly wider max */
+            margin: 0 auto;
+        }
+
+        .card {
+            aspect-ratio: 1 / 1;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.8rem, 6vw, 2.5rem); /* Responsive emoji */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.6s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Smoother flip */
+            transform-style: preserve-3d;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            will-change: transform; /* Optimize animation */
+        }
+
+        .card:not(.matched):not(.flipped):hover {
+            transform: scale(1.07); /* Slightly larger hover */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            background-color: var(--card-hover-bg);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+            background-color: #f0f0f0; /* Lighter flipped background */
+            cursor: default; /* Change cursor when flipped */
+        }
+
+         .card.matched {
+            cursor: default;
+            background-color: var(--card-matched-bg);
+            opacity: 0.85; /* Slightly less transparent */
+            transform: rotateY(0deg) scale(0.95); /* Keep it facing front, slightly scaled */
+            pointer-events: none; /* Disable clicks on matched cards */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Reduced shadow when matched */
+        }
+
+        /* NEW: Animation for just matched pair */
+        .card.match-celebrate {
+            animation: matchPulse 0.7s ease-out;
+        }
+
+        @keyframes matchPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--card-matched-glow); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px 5px var(--card-matched-glow); } /* Pulse bigger and glow */
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--card-matched-glow); } /* Return to final matched scale */
+        }
+
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .card-front { /* The '?' side */
+            background-color: var(--card-bg);
+            color: white;
+            font-size: clamp(2rem, 7vw, 3rem);
+             transition: background-color 0.3s ease;
+        }
+         .card:hover:not(.flipped):not(.matched) .card-front {
+             background-color: var(--card-hover-bg);
+         }
+
+        .card-back { /* The emoji side */
+            background-color: #fff;
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            font-size: clamp(2.2rem, 7vw, 3rem); /* Responsive emoji */
+        }
+
+        /* --- Word Scramble Specific Styles --- */
+        #wordScrambleSection .scrambled-word {
+            font-size: clamp(1.8rem, 7vw, 2.8rem); /* Responsive */
+            letter-spacing: clamp(3px, 1.5vw, 6px); /* Responsive */
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: #fffaf0; /* Floral White */
+            padding: clamp(0.8rem, 3vw, 1.2rem) clamp(1.5rem, 5vw, 2.5rem);
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 1.8rem;
+            border: 3px dashed var(--primary-color);
+            user-select: none;
+            word-break: break-all; /* Prevent long words causing overflow */
+        }
+
+        #wordScrambleSection .input-area {
+             display: flex;
+             flex-wrap: wrap; /* Allow wrapping on small screens */
+             justify-content: center;
+             align-items: center;
+             gap: 0.8rem; /* Space between input and button */
+        }
+
+        #wordScrambleSection input[type="text"] {
+            padding: clamp(0.7rem, 2.5vw, 0.9rem) clamp(1rem, 4vw, 1.2rem);
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            border-radius: 25px;
+            border: 2px solid var(--secondary-color);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            flex-grow: 1; /* Allow input to grow */
+            max-width: 300px; /* Limit input width */
+        }
+        #wordScrambleSection input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+        }
+
+        /* --- Video Section --- */
+        .video-section {
+            background-color: white;
+            border-radius: 20px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s 1s; /* Delay visibility transition */
+            visibility: hidden;
+            margin-top: 2.5rem; /* More space before video */
+        }
+
+        .video-section.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible;
+            transition: opacity 1s ease-out, transform 1s ease-out, visibility 0s 0s; /* Show visibility immediately */
+        }
+
+        .video-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: clamp(1.8rem, 5.5vw, 2.2rem);
+        }
+         .video-section p { /* Styling for the text above the video */
+            margin-bottom: 1.5rem;
+            font-size: clamp(1rem, 3vw, 1.15rem);
+             color: #444;
+        }
+
+        .video-container {
+            width: 100%; /* Take full width of its container */
+            max-width: 850px; /* Increased max-width */
+            margin: 1rem auto 0 auto;
+            aspect-ratio: 16 / 9;
+            background-color: #e0e0e0; /* Slightly darker placeholder background */
+            border-radius: 15px; /* More rounded */
+            overflow: hidden;
+            position: relative;
+            border: 4px solid var(--accent-color); /* Thicker border */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-container .placeholder-text {
+            position: absolute;
+            inset: 0; /* Cover the entire container */
+            display: flex; /* Center text */
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+            color: #555;
+            font-style: italic;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
+            backdrop-filter: blur(2px); /* Optional blur effect */
+            z-index: 1; /* Ensure it's above the video element if src is empty */
+        }
+
+        .video-container video {
+            display: block; /* Removes bottom space */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 11px; /* Slightly smaller than container */
+            position: relative; /* Needed if placeholder might overlay */
+            z-index: 0;
+        }
+
+        /* --- Celebration Overlay --- */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000; /* Ensure it's on top */
+            overflow: hidden;
+            display: none;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        .particle {
+             position: absolute;
+             border-radius: 50%;
+             /* Animation set in JS */
+             will-change: transform, opacity; /* Optimize animation */
+        }
+
+        /* --- Responsive Design Adjustments --- */
+        @media (max-width: 768px) {
+             header { border-radius: 0 0 30px 30px; } /* Adjust radius for smaller screens */
+             .game-board {
+                /* Ensure enough columns but not too small */
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                max-width: 90%; /* Use percentage width */
+             }
+             #wordScrambleSection .input-area {
+                 flex-direction: column; /* Stack input and button */
+                 align-items: stretch; /* Make input/button full width */
+             }
+             #wordScrambleSection input[type="text"] {
+                 max-width: none; /* Remove max-width limit */
+                 width: 100%; /* Take full available width */
+                 margin-bottom: 0.5rem; /* Add space below input when stacked */
+             }
+             #wordScrambleSection button {
+                  width: 100%; /* Full width button */
+                  margin: 0.5rem 0 0 0; /* Adjust margin */
+             }
+             .video-container { border-width: 3px; }
+        }
+
+        @media (max-width: 480px) {
+            header { border-radius: 0 0 25px 25px; }
+            .game-board {
+                /* Min card size smaller for very small screens */
+                 grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+                 gap: 0.6rem;
+            }
+            .card {
+                 border-radius: 8px; /* Smaller radius */
+            }
+            .card-front, .card-back { border-radius: 8px; }
+
+            #wordScrambleSection .scrambled-word {
+                 font-size: clamp(1.5rem, 6vw, 2rem);
+                 letter-spacing: 3px;
+                 padding: 0.8rem 1.2rem;
+            }
+             button {
+                padding: 0.7rem 1.5rem;
+             }
+             .container { margin: 1.5rem auto; padding: 0 0.8rem; }
+             .game-section { padding: 1.2rem; border-radius: 15px; }
+             .video-section { padding: 1.2rem; border-radius: 15px; }
+             .video-container { border-radius: 12px; border-width: 2px; }
+             .video-container video { border-radius: 10px; }
+        }
+
+    </style>
 </head>
-
 <body>
-    <div class="game-container">
-        <h1>Higher or Lower - Soccer Edition</h1>
-        <div class="player-container">
-            <div class="player" id="player1">
-                <img src="images/player1.png" alt="Player 1" id="player1-img">
-                <h2 id="player1-name">Player 1</h2>
-                <p id="player1-goals">Goals: ???</p>
-            </div>
-            <div class="vs">
-                <h2>VS</h2>
-            </div>
-            <div class="player" id="player2">
-                <img src="images/player2.png" alt="Player 2" id="player2-img">
-                <h2 id="player2-name">Player 2</h2>
-                <p id="player2-goals">Goals: ???</p>
-            </div>
-        </div>
-        <div id="current-score">Score: 0</div>
-        <div id="high-score">High Score: 0</div>
-        <button id="higher">Higher</button>
-        <button id="lower">Lower</button>
-        <div id="result"></div>
-        <button id="play-again" style="display: none;">Play Again</button>
-    </div>
-    <script src="javascript/script.js"></script>
-</body>
+    <div class="celebration" id="celebration"></div>
 
+    <header id="mainHeader">
+        <h1>Happy 24th Birthday Rachelle! 🎂</h1>
+        <p>Let's celebrate! Complete the two fun challenges below to unlock your special birthday surprise!</p>
+    </header>
+
+    <div class="container">
+        <!-- Game 1: Memory Match -->
+        <section class="game-section" id="memoryGameSection">
+            <h2>Challenge 1: Birthday Memory Match</h2>
+            <p>Find all the matching pairs! Click a card to flip it over. Good luck! 🎁</p>
+
+            <div class="stats">
+                <div class="moves-counter">Moves: <span id="moves">0</span></div>
+                <div class="timer">Time: <span id="timer">00:00</span></div>
+            </div>
+
+            <div class="game-board" id="memoryGameBoard">
+                <!-- Memory cards will be generated here -->
+            </div>
+
+            <div class="game-status" id="memoryGameStatus"></div>
+            <button id="memoryResetButton">Reset Memory Game</button>
+        </section>
+
+        <!-- Game 2: Word Scramble -->
+        <section class="game-section" id="wordScrambleSection">
+            <h2>Challenge 2: Birthday Word Scramble</h2>
+            <p>Unscramble the birthday-themed word below! Type your answer and hit 'Check'. 🎈</p>
+
+            <div class="scrambled-word" id="scrambledWordDisplay">WORD</div>
+             <div class="input-area">
+                 <input type="text" id="wordScrambleInput" placeholder="Your guess..." aria-label="Your guess for the scrambled word">
+                 <button id="wordScrambleSubmit">Check Word</button>
+             </div>
+
+            <div class="game-status" id="wordScrambleStatus"></div>
+            <button id="wordScrambleResetButton">New Word</button>
+        </section>
+
+        <!-- Video Section (Initially Hidden) -->
+        <section class="video-section" id="videoSection">
+            <h2>🎉 Hooray! Challenges Completed! 🎉</h2>
+            <p>Amazing job, Rachelle! You've unlocked your birthday surprise. Enjoy this special message!</p>
+
+            <div class="video-container">
+                 <div class="placeholder-text" id="videoPlaceholder">
+                    Video surprise loading... <br>(If it doesn't load, tell the sender to add the video file!)
+                 </div>
+                <!-- IMPORTANT: Replace src="" with the actual path/URL to your video file! -->
+                <!-- The 'controls' attribute gives Play/Pause, Volume, Fullscreen etc. -->
+                <video id="birthdayVideo" controls preload="metadata">
+                    <source src="birthday.mp4" type="video/mp4">
+                    <!-- Add other formats if available for broader compatibility -->
+                    <!-- <source src="path/to/your/video.webm" type="video/webm"> -->
+                    Oh no! Your browser doesn't support the video tag. Try a newer browser to see the surprise!
+                </video>
+            </div>
+
+            <button id="playAgainButton">Play Challenges Again?</button>
+        </section>
+    </div>
+
+    <script>
+        // --- Global State ---
+        let memoryGameCompleted = false;
+        let wordScrambleCompleted = false;
+
+        // --- DOM Elements ---
+        const memoryGameBoard = document.getElementById('memoryGameBoard');
+        const movesElement = document.getElementById('moves');
+        const timerElement = document.getElementById('timer');
+        const memoryResetButton = document.getElementById('memoryResetButton');
+        const memoryGameStatus = document.getElementById('memoryGameStatus');
+        const memoryGameSection = document.getElementById('memoryGameSection');
+
+        const scrambledWordDisplay = document.getElementById('scrambledWordDisplay');
+        const wordScrambleInput = document.getElementById('wordScrambleInput');
+        const wordScrambleSubmit = document.getElementById('wordScrambleSubmit');
+        const wordScrambleResetButton = document.getElementById('wordScrambleResetButton');
+        const wordScrambleStatus = document.getElementById('wordScrambleStatus');
+        const wordScrambleSection = document.getElementById('wordScrambleSection');
+
+        const videoSection = document.getElementById('videoSection');
+        const birthdayVideo = document.getElementById('birthdayVideo');
+        const videoPlaceholder = document.getElementById('videoPlaceholder');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const celebration = document.getElementById('celebration');
+        const mainHeader = document.getElementById('mainHeader');
+
+        // --- Memory Game Configuration & State ---
+        const emojis = ['🎂', '🎁', '🎈', '🎊', '🍰', '🍦', '🥂', '🎵', '⭐', '💖', '🥳', '✨']; // Even more emojis
+        const totalPairs = emojis.length;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let timer = 0;
+        let timerInterval;
+        let isMemoryGameStarted = false;
+        let isMemoryGameLocked = false;
+
+        // --- Word Scramble Configuration & State ---
+        const birthdayWords = ["BIRTHDAY", "CELEBRATE", "PRESENTS", "SURPRISE", "RACHELLE", "PARTY", "CAKE", "FRIENDS", "FAMILY", "TWENTYFOUR", "HAPPY", "WISHES", "BALLOONS", "CONFETTI", "JOYFUL", "MEMORIES"];
+        let currentWord = "";
+        let currentScrambledWord = "";
+
+        // --- Initialization ---
+        function initializePage() {
+            memoryGameCompleted = false;
+            wordScrambleCompleted = false;
+            memoryGameSection.classList.remove('completed');
+            wordScrambleSection.classList.remove('completed');
+            videoSection.classList.remove('revealed');
+            // Check video source on init
+            checkVideoSource();
+            initMemoryGame();
+            initWordScrambleGame();
+            createHeaderConfetti();
+            wordScrambleInput.disabled = false;
+            wordScrambleSubmit.disabled = false;
+        }
+
+        // --- Memory Game Logic ---
+        function initMemoryGame() {
+            memoryGameCompleted = false; // Ensure reset correctly
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            moves = 0;
+            timer = 0;
+            isMemoryGameStarted = false;
+            isMemoryGameLocked = false;
+
+            movesElement.textContent = moves;
+            timerElement.textContent = '00:00';
+            memoryGameBoard.innerHTML = '';
+            memoryGameStatus.textContent = '';
+            memoryGameStatus.className = 'game-status';
+            memoryGameSection.classList.remove('completed');
+
+            clearInterval(timerInterval);
+
+            const cardValues = [...emojis, ...emojis];
+            for (let i = cardValues.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cardValues[i], cardValues[j]] = [cardValues[j], cardValues[i]];
+            }
+
+            cardValues.forEach((value, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.cardIndex = index;
+                card.dataset.value = value;
+
+                const cardFront = document.createElement('div');
+                cardFront.className = 'card-front';
+                cardFront.textContent = '✨'; // Use a sparkle for the front
+
+                const cardBack = document.createElement('div');
+                cardBack.className = 'card-back';
+                cardBack.textContent = value;
+
+                card.appendChild(cardFront);
+                card.appendChild(cardBack);
+
+                // Use a named function for easier removal later if needed
+                card.clickHandler = () => handleCardClick(card);
+                card.addEventListener('click', card.clickHandler);
+
+                memoryGameBoard.appendChild(card);
+                memoryCards.push(card);
+            });
+        }
+
+        function handleCardClick(card) {
+            if (memoryGameCompleted || isMemoryGameLocked || flippedCards.includes(card) || card.classList.contains('matched')) {
+                return;
+            }
+
+            if (!isMemoryGameStarted) {
+                startMemoryTimer();
+                isMemoryGameStarted = true;
+            }
+
+            card.classList.add('flipped');
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                movesElement.textContent = moves;
+                isMemoryGameLocked = true;
+
+                const [card1, card2] = flippedCards;
+
+                if (card1.dataset.value === card2.dataset.value) {
+                    // *** MATCH FOUND - ENHANCED FEEDBACK ***
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+
+                    // Add celebration class for animation
+                    card1.classList.add('match-celebrate');
+                    card2.classList.add('match-celebrate');
+
+                    // Remove the celebration class after animation ends
+                    setTimeout(() => {
+                        card1.classList.remove('match-celebrate');
+                        card2.classList.remove('match-celebrate');
+                    }, 700); // Match animation duration (0.7s)
+
+                    matchedPairs++;
+                    flippedCards = [];
+                    isMemoryGameLocked = false; // Unlock earlier for matched pairs
+
+                    if (matchedPairs === totalPairs) {
+                        handleMemoryWin();
+                    }
+                } else {
+                    // No match
+                    setTimeout(() => {
+                        card1.classList.remove('flipped');
+                        card2.classList.remove('flipped');
+                        flippedCards = [];
+                        isMemoryGameLocked = false;
+                    }, 1000); // Keep delay for non-matches
+                }
+            }
+        }
+
+        function startMemoryTimer() {
+            clearInterval(timerInterval);
+            timer = 0;
+            timerInterval = setInterval(() => {
+                timer++;
+                const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
+                const seconds = (timer % 60).toString().padStart(2, '0');
+                timerElement.textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        function handleMemoryWin() {
+            clearInterval(timerInterval);
+            memoryGameCompleted = true;
+            memoryGameStatus.textContent = `Memory Challenge Complete! (${moves} moves, ${timerElement.textContent})`;
+            memoryGameStatus.className = 'game-status status-success';
+            memoryGameSection.classList.add('completed');
+             // Disable clicks on all cards (alternative to removing listener)
+             memoryCards.forEach(card => card.style.pointerEvents = 'none');
+
+            checkAllGamesCompleted();
+        }
+
+        // --- Word Scramble Logic ---
+        function initWordScrambleGame() {
+            wordScrambleCompleted = false; // Ensure reset correctly
+            wordScrambleInput.value = '';
+            wordScrambleStatus.textContent = '';
+            wordScrambleStatus.className = 'game-status';
+            wordScrambleSection.classList.remove('completed');
+            wordScrambleInput.disabled = false;
+            wordScrambleSubmit.disabled = false;
+
+            currentWord = birthdayWords[Math.floor(Math.random() * birthdayWords.length)];
+            currentScrambledWord = scrambleWord(currentWord);
+            while (currentScrambledWord === currentWord && currentWord.length > 1) {
+                 currentScrambledWord = scrambleWord(currentWord);
+            }
+            scrambledWordDisplay.textContent = currentScrambledWord;
+        }
+
+        function scrambleWord(word) {
+            let scrambled = word.split('');
+            for (let i = scrambled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [scrambled[i], scrambled[j]] = [scrambled[j], scrambled[i]];
+            }
+            return scrambled.join('');
+        }
+
+        function checkWordScrambleGuess() {
+             if(wordScrambleCompleted) return; // Don't check if already won
+
+            const guess = wordScrambleInput.value.trim().toUpperCase();
+
+            if (!guess) {
+                wordScrambleStatus.textContent = "Please enter your guess!";
+                wordScrambleStatus.className = 'game-status status-hint';
+                return;
+            }
+
+            if (guess === currentWord) {
+                handleWordScrambleWin();
+            } else {
+                wordScrambleStatus.textContent = "Not quite! Try again! 🤔";
+                wordScrambleStatus.className = 'game-status status-error';
+                wordScrambleInput.select();
+                wordScrambleSection.animate([
+                    { transform: 'translateX(0)' }, { transform: 'translateX(-6px)' },
+                    { transform: 'translateX(6px)' }, { transform: 'translateX(-6px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 350, easing: 'ease-in-out' });
+            }
+        }
+
+         function handleWordScrambleWin() {
+            wordScrambleCompleted = true;
+            wordScrambleStatus.textContent = `Correct! The word was ${currentWord}. Well done!`;
+            wordScrambleStatus.className = 'game-status status-success';
+            wordScrambleSection.classList.add('completed');
+            wordScrambleInput.disabled = true;
+            wordScrambleSubmit.disabled = true;
+
+            checkAllGamesCompleted();
+        }
+
+        // --- Game Completion & Video Unlock ---
+        function checkVideoSource() {
+            // Show/hide placeholder based on video src
+            const sourceElement = birthdayVideo.querySelector('source');
+            if (sourceElement && sourceElement.getAttribute('src')) {
+                videoPlaceholder.style.display = 'none';
+            } else {
+                videoPlaceholder.style.display = 'block';
+            }
+        }
+
+        function checkAllGamesCompleted() {
+            if (memoryGameCompleted && wordScrambleCompleted) {
+                showCelebration();
+
+                setTimeout(() => {
+                    videoSection.classList.add('revealed');
+                    checkVideoSource(); // Ensure placeholder is hidden if src is valid
+                    videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Optional: Attempt to play only if source exists
+                    // const sourceElement = birthdayVideo.querySelector('source');
+                    // if (sourceElement && sourceElement.getAttribute('src')) {
+                    //     birthdayVideo.play().catch(e => console.log("Autoplay prevented:", e));
+                    // }
+                }, 1500);
+            }
+        }
+
+        // --- Celebration Effect ---
+         function createHeaderConfetti() {
+            const header = mainHeader;
+             const existingConfetti = header.querySelectorAll('.confetti');
+             existingConfetti.forEach(c => c.remove());
+
+            for (let i = 0; i < 60; i++) { // Slightly more confetti
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.width = `${Math.random() * 4 + 4}px`; // Smaller range
+                confetti.style.height = `${Math.random() * 8 + 8}px`;
+                 confetti.style.opacity = Math.random() * 0.4 + 0.6;
+                confetti.style.animationDuration = `${Math.random() * 4 + 3.5}s`;
+                confetti.style.animationDelay = `${Math.random() * 5.5}s`;
+                 confetti.style.setProperty('--tx', `${Math.random() * 50 - 25}px`);
+                header.appendChild(confetti);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff69b4', '#9370db', '#ffdf00', '#32cd32', '#00bfff', '#ff7f50', '#ffa500', '#f08080'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function showCelebration() {
+            celebration.innerHTML = '';
+            celebration.classList.add('active');
+
+            for (let i = 0; i < 180; i++) { // Increase particle count
+                createParticle();
+            }
+
+            setTimeout(() => {
+                celebration.classList.remove('active');
+                celebration.innerHTML = '';
+            }, 6000); // Longer celebration
+        }
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 8 + 4; // Smaller particles
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.backgroundColor = getRandomColor();
+            particle.style.borderRadius = Math.random() > 0.3 ? '50%' : '5px'; // More circles, some squares/diamonds
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `-25px`; // Start slightly higher
+
+            const xEnd = (Math.random() - 0.5) * 500;
+            const yEnd = window.innerHeight + 60;
+            const rotation = Math.random() * 900 - 450; // More spin
+
+            particle.animate([
+                { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                { opacity: 0.9, offset: 0.9 }, // Fade slightly earlier
+                { transform: `translate(${xEnd}px, ${yEnd}px) rotate(${rotation}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3500 + 2500, // Duration 2.5-6s
+                easing: 'ease-out',
+                delay: Math.random() * 800 // Wider stagger
+            });
+
+            celebration.appendChild(particle);
+        }
+
+        // --- Event Listeners ---
+        memoryResetButton.addEventListener('click', initMemoryGame);
+        wordScrambleResetButton.addEventListener('click', initWordScrambleGame);
+        wordScrambleSubmit.addEventListener('click', checkWordScrambleGuess);
+         wordScrambleInput.addEventListener('keyup', (event) => {
+             if (event.key === 'Enter') {
+                 checkWordScrambleGuess();
+             }
+         });
+
+        playAgainButton.addEventListener('click', () => {
+            initializePage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (birthdayVideo && !birthdayVideo.paused) {
+                birthdayVideo.pause();
+                birthdayVideo.currentTime = 0;
+            }
+        });
+
+        // --- Initial Load ---
+        // Use DOMContentLoaded for faster initial setup, load for full resource loading (like header confetti timing)
+        document.addEventListener('DOMContentLoaded', initializePage);
+        // window.addEventListener('load', createHeaderConfetti); // Can also add confetti on full load if preferred
+
+        // --- Helper Function ---
+        function setVideoSource(url) {
+            const videoElement = document.getElementById('birthdayVideo');
+            const source = videoElement.querySelector('source') || document.createElement('source');
+            if (url) {
+                source.src = url;
+                source.type = 'video/mp4'; // Adjust if needed
+                if (!videoElement.contains(source)) {
+                    videoElement.appendChild(source);
+                }
+                videoElement.load();
+            } else {
+                 if (videoElement.contains(source)) {
+                     source.removeAttribute('src');
+                 }
+            }
+            checkVideoSource(); // Update placeholder visibility
+        }
+
+        // Example Usage (replace with actual video path/URL):
+        // setVideoSource('your_birthday_video.mp4');
+
+    </script>
+</body>
 </html>
